@@ -93,7 +93,12 @@ require('lazy').setup({
 
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
-    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
+    dependencies = {
+      'hrsh7th/cmp-nvim-lsp',
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+      'ray-x/lsp_signature.nvim',
+    },
   },
 
   -- Useful plugin to show you pending keybinds.
@@ -112,11 +117,11 @@ require('lazy').setup({
     },
   },
 
-  { -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
+  { -- Vivid theme
+    'bluz71/vim-nightfly-guicolors',
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'onedark'
+      vim.cmd.colorscheme 'nightfly'
     end,
   },
 
@@ -126,7 +131,7 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'onedark',
+        theme = 'nightfly',
         component_separators = '|',
         section_separators = '',
       },
@@ -191,10 +196,11 @@ require('lazy').setup({
 -- See `:help vim.o`
 
 -- Set highlight on search
-vim.o.hlsearch = false
+vim.o.hlsearch = true
 
 -- Make line numbers default
 vim.wo.number = true
+vim.wo.relativenumber = true
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
@@ -293,7 +299,7 @@ require('nvim-treesitter.configs').setup {
   auto_install = false,
 
   highlight = { enable = true },
-  indent = { enable = true, disable = { 'python' } },
+  indent = { enable = true },
   incremental_selection = {
     enable = true,
     keymaps = {
@@ -408,9 +414,9 @@ end
 local servers = {
   -- clangd = {},
   -- gopls = {},
-  -- pyright = {},
-  -- rust_analyzer = {},
-  -- tsserver = {},
+  pyright = {},
+  rust_analyzer = {},
+  tsserver = {},
 
   lua_ls = {
     Lua = {
@@ -490,6 +496,12 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+
+require('lsp_signature').setup({
+  floating_window = false,
+  hint_enable = true,
+  hint_prefix = '→ ',
+})
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
