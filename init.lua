@@ -23,15 +23,24 @@ require('lazy').setup({
     lazy = false,
     priority = 1000,
   },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    lazy = false,
+    priority = 1000,
+  },
 
   'tpope/vim-sleuth',
 
   {
     'lukas-reineke/indent-blankline.nvim',
+    main = 'ibl',
     opts = {
-      show_end_of_line = true,
-      show_trailing_blankline_indent = false,
-      show_current_context = true,
+      scope = {
+        char = '▏',
+        show_start = false,
+        show_end = false,
+      },
     },
   },
 
@@ -57,7 +66,11 @@ require('lazy').setup({
     dependencies = {
       { 'williamboman/mason.nvim', config = true },
       'williamboman/mason-lspconfig.nvim',
-      { 'j-hui/fidget.nvim', opts = {} },
+      {
+        'j-hui/fidget.nvim',
+        tag = 'legacy',
+        opts = {},
+      },
       'folke/neodev.nvim',
     },
   },
@@ -100,7 +113,7 @@ require('lazy').setup({
   { import = 'custom.plugins' },
 })
 
-vim.cmd [[colorscheme nightfly]]
+vim.cmd [[colorscheme catppuccin-macchiato]]
 
 -- System integration
 vim.o.clipboard = 'unnamedplus'
@@ -132,6 +145,11 @@ vim.opt.expandtab = true
 vim.api.nvim_create_autocmd(
   'FileType',
   { pattern = { 'javascript', 'typescript', 'jsx', 'typescriptreact' }, command = [[set tabstop=2 shiftwidth=2]] }
+)
+
+vim.api.nvim_create_autocmd(
+  'FileType',
+  { pattern = { 'asm' }, command = [[set noet ci pi sts=0 sw=8 ts=8]] }
 )
 
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
@@ -228,6 +246,9 @@ local servers = {
   pyright = {},
   tsserver = {},
   rust_analyzer = {},
+  clangd = {},
+  html = {},
+  zls = {},
   -- lua_ls = {
   --   Lua = {
   --     workspace = { checkThirdParty = false },
